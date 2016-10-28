@@ -1701,15 +1701,7 @@
 
     Slick.prototype.refresh = function( initializing ) {
 
-        var _ = this, currentSlide, lastVisibleIndex;
-
-        lastVisibleIndex = _.slideCount - _.options.slidesToShow;
-
-        // in non-infinite sliders, we don't want to go past the
-        // last visible index.
-        if( !_.options.infinite && ( _.currentSlide > lastVisibleIndex )) {
-            _.currentSlide = lastVisibleIndex;
-        }
+        var _ = this, currentSlide;
 
         currentSlide = _.currentSlide;
 
