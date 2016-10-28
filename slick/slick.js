@@ -1711,12 +1711,6 @@
             _.currentSlide = lastVisibleIndex;
         }
 
-        // if less slides than to show, go to start.
-        if ( _.slideCount <= _.options.slidesToShow ) {
-            _.currentSlide = 0;
-
-        }
-
         currentSlide = _.currentSlide;
 
         _.destroy(true);
