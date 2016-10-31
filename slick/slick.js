@@ -1094,8 +1094,7 @@
         }
 
         if (_.options.variableWidth === true) {
-
-            if (_.slideCount <= _.options.slidesToShow || _.options.infinite === false) {
+            if (_.options.infinite === false) {
                 targetSlide = _.$slideTrack.children('.slick-slide').eq(slideIndex);
             } else {
                 targetSlide = _.$slideTrack.children('.slick-slide').eq(slideIndex + _.options.slidesToShow);
@@ -1108,7 +1107,12 @@
                     targetLeft =  0;
                 }
             } else {
-                targetLeft = targetSlide[0] ? targetSlide[0].offsetLeft * -1 : 0;
+                var firstSlide = _.$slideTrack.children('.slick-slide').eq(0);
+                if (targetSlide[0]) {
+                  targetLeft = (targetSlide[0].offsetLeft * -1) + firstSlide[0].offsetLeft;
+                } else {
+                  targetLeft = 0;
+                }
             }
 
             if (_.options.centerMode === true) {
@@ -1129,6 +1133,12 @@
                 }
 
                 targetLeft += (_.$list.width() - targetSlide.outerWidth()) / 2;
+            }
+
+            var minTargetLeft = (_.$slideTrack.width() - _.$list.width()) * -1;
+            if (targetLeft < minTargetLeft) {
+              targetLeft = minTargetLeft;
+              _.currentSlide = _.slideCount - 1;
             }
         }
 
@@ -1920,7 +1930,13 @@
             _.$slideTrack.width(Math.ceil((_.slideWidth * _.$slideTrack.children('.slick-slide').length)));
 
         } else if (_.options.variableWidth === true) {
-            _.$slideTrack.width(5000 * _.slideCount);
+            var children = _.$slideTrack.children('.slick-slide');
+            var width = 0;
+            children.each(function() {
+              width += $(this).outerWidth(true);
+            });
+            _.$slideTrack.width(width);
+            // _.$slideTrack.width(5000 * _.slideCount);
         } else {
             _.slideWidth = Math.ceil(_.listWidth);
             _.$slideTrack.height(Math.ceil((_.$slides.first().outerHeight(true) * _.$slideTrack.children('.slick-slide').length)));
