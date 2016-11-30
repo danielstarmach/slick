@@ -2795,7 +2795,11 @@
             if (_.currentSlide === 0) {
 
                 _.$prevArrow.addClass('slick-disabled').attr('aria-disabled', 'true');
-                _.$nextArrow.removeClass('slick-disabled').attr('aria-disabled', 'false');
+                if (_.slideCount - _.options.slidesToShow === 0) {
+                  _.$nextArrow.addClass('slick-disabled').attr('aria-disabled', 'true');
+                } else {
+                  _.$nextArrow.removeClass('slick-disabled').attr('aria-disabled', 'false');
+                }
 
             } else if (_.currentSlide >= _.slideCount - _.options.slidesToShow && _.options.centerMode === false) {
 
