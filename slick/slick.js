@@ -1058,13 +1058,15 @@
               _.slideOffset = (_.slideWidth * _.options.slidesToShow) * -1;
               verticalOffset = (verticalHeight * _.options.slidesToShow) * -1;
 
-              if (slideIndex + _.options.slidesToScroll > _.slideCount && _.slideCount > _.options.slidesToShow) {
-                  if (slideIndex > _.slideCount) {
-                      _.slideOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * _.slideWidth) * -1;
-                      verticalOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * verticalHeight) * -1;
-                  } else {
-                      _.slideOffset = ((_.slideCount % _.options.slidesToScroll) * _.slideWidth) * -1;
-                      verticalOffset = ((_.slideCount % _.options.slidesToScroll) * verticalHeight) * -1;
+              if (_.slideCount % _.options.slidesToScroll !== 0) {
+                  if (slideIndex + _.options.slidesToScroll > _.slideCount && _.slideCount > _.options.slidesToShow) {
+                      if (slideIndex > _.slideCount) {
+                          _.slideOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * _.slideWidth) * -1;
+                          verticalOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * verticalHeight) * -1;
+                      } else {
+                          _.slideOffset = ((_.slideCount % _.options.slidesToScroll) * _.slideWidth) * -1;
+                          verticalOffset = ((_.slideCount % _.options.slidesToScroll) * verticalHeight) * -1;
+                      }
                   }
               }
         } else {
@@ -1079,8 +1081,10 @@
             verticalOffset = 0;
         }
 
-        if (_.options.centerMode === true && _.options.infinite === true) {
+        if (_.options.centerMode === true && _.options.infinite === true && _.slideCount <= _.options.slidesToShow) {
             _.slideOffset += _.slideWidth * Math.floor(_.options.slidesToShow / 2);
+        } else if (_.options.centerMode === true && _.options.infinite === true) {
+            _.slideOffset += _.slideWidth * Math.floor(_.options.slidesToShow / 2) - _.slideWidth;
         } else if (_.options.centerMode === true) {
             _.slideOffset = 0;
             _.slideOffset += _.slideWidth * Math.floor(_.options.slidesToShow / 2);
