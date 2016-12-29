@@ -1055,19 +1055,18 @@
         verticalHeight = _.$slides.first().outerHeight(true);
 
         if (_.options.infinite === true) {
-            _.slideOffset = (_.slideWidth * _.options.slidesToShow) * -1;
-            verticalOffset = (verticalHeight * _.options.slidesToShow) * -1;
-            if (_.slideCount % _.options.slidesToScroll !== 0) {
-                if (slideIndex + _.options.slidesToScroll > _.slideCount && _.slideCount > _.options.slidesToShow) {
-                    if (slideIndex > _.slideCount) {
-                        _.slideOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * _.slideWidth) * -1;
-                        verticalOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * verticalHeight) * -1;
-                    } else {
-                        _.slideOffset = ((_.slideCount % _.options.slidesToScroll) * _.slideWidth) * -1;
-                        verticalOffset = ((_.slideCount % _.options.slidesToScroll) * verticalHeight) * -1;
-                    }
-                }
-            }
+              _.slideOffset = (_.slideWidth * _.options.slidesToShow) * -1;
+              verticalOffset = (verticalHeight * _.options.slidesToShow) * -1;
+
+              if (slideIndex + _.options.slidesToScroll > _.slideCount && _.slideCount > _.options.slidesToShow) {
+                  if (slideIndex > _.slideCount) {
+                      _.slideOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * _.slideWidth) * -1;
+                      verticalOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * verticalHeight) * -1;
+                  } else {
+                      _.slideOffset = ((_.slideCount % _.options.slidesToScroll) * _.slideWidth) * -1;
+                      verticalOffset = ((_.slideCount % _.options.slidesToScroll) * verticalHeight) * -1;
+                  }
+              }
         } else {
             if (slideIndex > _.slideCount) {
                 _.slideOffset = ((slideIndex + _.options.slidesToShow) - _.slideCount) * _.slideWidth;
@@ -1075,13 +1074,13 @@
             }
         }
 
-        if (_.slideCount <= _.options.slidesToShow) {
+        if (!_.options.infinite && _.slideCount <= _.options.slidesToShow) {
             _.slideOffset = 0;
             verticalOffset = 0;
         }
 
         if (_.options.centerMode === true && _.options.infinite === true) {
-            _.slideOffset += _.slideWidth * Math.floor(_.options.slidesToShow / 2) - _.slideWidth;
+            _.slideOffset += _.slideWidth * Math.floor(_.options.slidesToShow / 2);
         } else if (_.options.centerMode === true) {
             _.slideOffset = 0;
             _.slideOffset += _.slideWidth * Math.floor(_.options.slidesToShow / 2);
@@ -2292,8 +2291,7 @@
                 infiniteCount = _.options.slidesToShow;
             }
 
-            for (i = _.slideCount; i > (_.slideCount -
-                    infiniteCount); i -= 1) {
+            for (i = _.slideCount; i > (_.slideCount - infiniteCount); i -= 1) {
                 slideIndex = i - 1;
                 $(_.$slides[slideIndex]).clone(true).attr('id', '')
                     .attr('data-slick-index', slideIndex - _.slideCount)
